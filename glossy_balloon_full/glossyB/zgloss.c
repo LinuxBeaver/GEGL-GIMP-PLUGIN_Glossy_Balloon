@@ -126,7 +126,7 @@ gegl_op_class_init (GeglOpClass *klass)
   gegl_operation_class_set_keys (operation_class,
     "name",        "gegl:zglossy",
     "title",       _("zglossy"),
-    "categories",  "generic",
+    "categories",  "hidden",
     "reference-hash", "29b1522f12gf4egh87ba97b41d8d2e",
     "description", _("hidden operation meant to power gegl glossy bevel"),
     NULL);
