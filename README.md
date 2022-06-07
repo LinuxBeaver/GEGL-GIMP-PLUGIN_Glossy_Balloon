@@ -1,4 +1,7 @@
 # GEGL-glossy-balloon-text-styling
+
+![image preview](preview4.png)
+
 A new Gimp filter where GEGL makes a glossy balloon effect on your text
 
 You must build zgloss, zglossy2, and glossybevel and put the .so or .dll files in /gegl-0.4/plug-ins/ on Linux click the build_linux.sh or use the 
