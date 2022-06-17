@@ -40,6 +40,19 @@ property_double (hue, _("Color rotation"),  0.0)
    description  (_("Color rotation. Don't like being locked into only a few colors? Manually desaturate and apply a color effect'"))
    value_range  (-180.0, 180.0)
 
+property_double (lightness, _("Lightness"), 0.0)
+   description  (_("Lightness adjustment"))
+   value_range  (-15.0, 15.0)
+
+property_double (saturation, _("Desaturation for Image File Upload"), 1)
+   description  (_("Saturation"))
+  ui_range (0.0, 1.0)
+   value_range  (0.0, 1.0)
+
+property_file_path(src, _("Image file overlay (Desaturation  strongly recommended)"), "")
+    description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
+
+
 
 #else
 
@@ -52,7 +65,7 @@ property_double (hue, _("Color rotation"),  0.0)
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box;
+  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box, *layer, *saturation;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -60,7 +73,6 @@ static void attach (GeglOperation *operation)
    blur = gegl_node_new_child (gegl,
                                   "operation", "gegl:gaussian-blur",
                                   NULL);
-
 
  graph   = gegl_node_new_child (gegl,
                                   "operation", "gegl:zglossy",
@@ -81,14 +93,26 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:hue-chroma",
                                   NULL);
 
+ layer   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:zzmlayer",
+                                  NULL);
 
-  gegl_node_link_many (input, graph, blur, graph2, box, hue, output, NULL);
+ saturation   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:saturation",
+                                  NULL);
+
+
+
+
+  gegl_node_link_many (input, graph, blur, graph2, box, hue, saturation, layer, output, NULL);
 
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-x");
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-y");
   gegl_operation_meta_redirect (operation, "radius1", box, "radius");
   gegl_operation_meta_redirect (operation, "hue", hue, "hue");
-
+  gegl_operation_meta_redirect (operation, "lightness", hue, "lightness");
+  gegl_operation_meta_redirect (operation, "src", layer, "src");
+  gegl_operation_meta_redirect (operation, "saturation", saturation, "scale");
 
 
 
