@@ -14,7 +14,7 @@
  * License along with GEGL; if not, see <https://www.gnu.org/licenses/>.
  *
  * Copyright 2006 Øyvind Kolås <pippin@gimp.org>
- * 2022 Beaver GEGL Glossy Baloon
+ * 2022 Beaver GEGL Glossy Balloon
  */
 
 #include "config.h"
@@ -24,33 +24,60 @@
 
 
 
+
+property_string (string, _("Graph1"), TUTORIAL)
+    ui_meta     ("role", "output-extent")
+
+#define TUTORIAL \
+" color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=290  ] "\
+
+property_string (string2, _("Graph2"), TUTORIAL2)
+    ui_meta     ("role", "output-extent")
+
+#define TUTORIAL2 \
+" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=190 gaussian-blur std-dev-x=1 std-dev-y=1 id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=290 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=290 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 gimp:threshold-alpha value=0.99 dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 ] "\
+
+
 property_double (gaus, _("Balloonification of text"), 6.0)
    description  (_("The lower the less balloonification. The higher the more balloonification.'"))
   value_range (0.5, 20.0)
   ui_range (0.5, 14)
   ui_gamma (1.5)
 
-property_int (radius1, _("Radius"), 2)
-   description(_("A mild box blur to smooth rough edges"))
-   value_range (1, 3)
-   ui_range    (1, 3)
-   ui_gamma   (1.5)
-
 property_double (hue, _("Color rotation"),  0.0)
    description  (_("Color rotation. Don't like being locked into only a few colors? Manually desaturate and apply a color effect'"))
    value_range  (-180.0, 180.0)
 
-property_double (lightness, _("Lightness"), 0.0)
+property_double (lightness, _("Lightness"), -7)
    description  (_("Lightness adjustment"))
-   value_range  (-15.0, 15.0)
+   value_range  (-15.0, 15)
 
-property_double (saturation, _("Desaturation for Image File Upload"), 1)
+property_double (saturation, _("Desaturation for Image File Upload"), 1.2)
    description  (_("Saturation"))
-  ui_range (0.0, 1.0)
-   value_range  (0.0, 1.0)
+  ui_range (0.0, 1.5)
+   value_range  (0.0, 1.5)
 
-property_file_path(src, _("Image file overlay (Desaturation  strongly recommended)"), "")
+property_file_path(src, _("Image file overlay (Desaturation and bright light recommended)"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
+
+property_double (opacity, _("Opacity of image file overlay"), 1.0)
+    description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
+    value_range (0, 1.0)
+    ui_range    (0.0, 1.0)
+    ui_meta     ("role", "output-extent")
+
+property_double (sharpen, _("Sharpen (only works on image overlays)"), 0.0)
+    description(_("Scaling factor for unsharp-mask, the strength of effect"))
+    value_range (0.0, 2.5)
+    ui_range    (0.0, 2.5)
+    ui_gamma    (3.0)
+
+property_int (radius1, _("Blur to smooth edges (works best for image file overlays)"), 2)
+   description(_("A mild box blur to smooth rough edges"))
+   value_range (1, 2)
+   ui_range    (1, 2)
+   ui_gamma   (1.5)
+
 
 
 
@@ -65,7 +92,7 @@ property_file_path(src, _("Image file overlay (Desaturation  strongly recommende
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box, *layer, *saturation;
+  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box, *layer, *opacity, *sharpen, *saturation, *multiply;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -75,11 +102,11 @@ static void attach (GeglOperation *operation)
                                   NULL);
 
  graph   = gegl_node_new_child (gegl,
-                                  "operation", "gegl:zglossy",
+                                  "operation", "gegl:gegl",
                                   NULL);
 
  graph2   = gegl_node_new_child (gegl,
-                                  "operation", "gegl:zglossy2",
+                                  "operation", "gegl:gegl",
                                   NULL);
 
 
@@ -88,23 +115,41 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:box-blur",
                                   NULL);
 
+ sharpen   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:unsharp-mask",
+                                  NULL);
+
 
  hue   = gegl_node_new_child (gegl,
                                   "operation", "gegl:hue-chroma",
                                   NULL);
 
  layer   = gegl_node_new_child (gegl,
-                                  "operation", "gegl:zzmlayer",
+                                  "operation", "gegl:layer",
                                   NULL);
+
+ opacity   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:opacity",
+                                  NULL);
+
+
 
  saturation   = gegl_node_new_child (gegl,
                                   "operation", "gegl:saturation",
                                   NULL);
 
+ multiply   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:multiply",
+                                  NULL);
 
 
 
-  gegl_node_link_many (input, graph, blur, graph2, box, hue, saturation, layer, output, NULL);
+
+  gegl_node_link_many (input, graph, blur, graph2, box, hue, saturation, multiply, output, NULL);
+  gegl_node_connect_from (multiply, "aux", sharpen, "output");
+  gegl_node_link_many (layer, sharpen, NULL);
+
+
 
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-x");
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-y");
@@ -112,7 +157,11 @@ static void attach (GeglOperation *operation)
   gegl_operation_meta_redirect (operation, "hue", hue, "hue");
   gegl_operation_meta_redirect (operation, "lightness", hue, "lightness");
   gegl_operation_meta_redirect (operation, "src", layer, "src");
+
   gegl_operation_meta_redirect (operation, "saturation", saturation, "scale");
+  gegl_operation_meta_redirect (operation, "string",  graph, "string");
+  gegl_operation_meta_redirect (operation, "string2",  graph2, "string");
+  gegl_operation_meta_redirect (operation, "sharpen",  sharpen, "scale");
 
 
 
