@@ -4,8 +4,7 @@
 
 A new Gimp filter where GEGL makes a glossy balloon effect on your text
 
-You must build zgloss, zglossy2, and glossybevel and put the .so or .dll files in /gegl-0.4/plug-ins/ on Linux click the build_linux.sh or use the 
-optional binaries I included. On Windows read this
+Just put the binary in /gegl-0.4/plug-ins/ Glossy Balloon no longer has hidden operations/multiple binary depedencies.
 
 -
 
