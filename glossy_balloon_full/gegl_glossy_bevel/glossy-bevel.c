@@ -29,13 +29,13 @@ property_string (string, _("Graph1"), TUTORIAL)
     ui_meta     ("role", "output-extent")
 
 #define TUTORIAL \
-" color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=290  ] "\
+" color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=100 "\
 
 property_string (string2, _("Graph2"), TUTORIAL2)
     ui_meta     ("role", "output-extent")
 
 #define TUTORIAL2 \
-" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=190 gaussian-blur std-dev-x=1 std-dev-y=1 id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=290 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=290 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 gimp:threshold-alpha value=0.99 dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 ] "\
+" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur std-dev-x=1 std-dev-y=1 id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 gimp:threshold-alpha value=0.99 dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 ] "\
 
 
 property_double (gaus, _("Balloonification of text"), 6.0)
@@ -157,7 +157,6 @@ static void attach (GeglOperation *operation)
   gegl_operation_meta_redirect (operation, "hue", hue, "hue");
   gegl_operation_meta_redirect (operation, "lightness", hue, "lightness");
   gegl_operation_meta_redirect (operation, "src", layer, "src");
-
   gegl_operation_meta_redirect (operation, "saturation", saturation, "scale");
   gegl_operation_meta_redirect (operation, "string",  graph, "string");
   gegl_operation_meta_redirect (operation, "string2",  graph2, "string");
