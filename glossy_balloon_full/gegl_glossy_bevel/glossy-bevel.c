@@ -35,7 +35,8 @@ property_string (string2, _("Graph2"), TUTORIAL2)
     ui_meta     ("role", "output-extent")
 
 #define TUTORIAL2 \
-" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur std-dev-x=1 std-dev-y=1 id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 gimp:threshold-alpha value=0.99 dropshadow x=0.65 y=0.65 opacity=2 color=#ab0091 grow-radius=0 radius=0 ] "\
+" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur std-dev-x=1 std-dev-y=1 filter=fir id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] reinhard05 brightness=-4 light=0 chromatic=0   "\
+
 
 
 property_double (gaus, _("Balloonification of text"), 6.0)
@@ -45,7 +46,7 @@ property_double (gaus, _("Balloonification of text"), 6.0)
   ui_gamma (1.5)
 
 property_double (hue, _("Color rotation"),  0.0)
-   description  (_("Color rotation. Don't like being locked into only a few colors? Manually desaturate and apply a color effect'"))
+   description  (_("Color rotation. Don't like being locked into only a few colors? Desaturate and apply a color effect'"))
    value_range  (-180.0, 180.0)
 
 property_double (lightness, _("Lightness"), -7)
@@ -60,6 +61,12 @@ property_double (saturation, _("Desaturation for Image File Upload"), 1.2)
 property_file_path(src, _("Image file overlay (Desaturation and bright light recommended)"), "")
     description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
 
+property_double (opacityall, _("Slide up to remove transparency puff around edges"), 1.0)
+    description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
+    value_range (1, 5)
+    ui_range    (1.0, 5)
+
+
 property_double (opacity, _("Opacity of image file overlay"), 1.0)
     description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
     value_range (0, 1.0)
@@ -71,12 +78,14 @@ property_double (sharpen, _("Sharpen (only works on image overlays)"), 0.0)
     value_range (0.0, 2.5)
     ui_range    (0.0, 2.5)
     ui_gamma    (3.0)
+    ui_meta     ("role", "output-extent")
 
-property_int (radius1, _("Blur to smooth edges (works best for image file overlays)"), 2)
+property_int (radius1, _("Blur to smooth edges (works best for image file overlays)"), 0)
    description(_("A mild box blur to smooth rough edges"))
    value_range (1, 2)
    ui_range    (1, 2)
    ui_gamma   (1.5)
+    ui_meta     ("role", "output-extent")
 
 
 
@@ -92,13 +101,14 @@ property_int (radius1, _("Blur to smooth edges (works best for image file overla
 static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
-  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box, *layer, *opacity, *sharpen, *saturation, *multiply;
+  GeglNode *input, *output, *blur, *graph, *graph2, *hue, *box, *layer, *opacity, *sharpen, *saturation, *opacityall, *multiply;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
 
-   blur = gegl_node_new_child (gegl,
+  blur    = gegl_node_new_child (gegl,
                                   "operation", "gegl:gaussian-blur",
+   "filter", 1,
                                   NULL);
 
  graph   = gegl_node_new_child (gegl,
@@ -132,6 +142,11 @@ static void attach (GeglOperation *operation)
                                   "operation", "gegl:opacity",
                                   NULL);
 
+ opacityall   = gegl_node_new_child (gegl,
+                                  "operation", "gegl:opacity",
+                                  NULL);
+
+
 
 
  saturation   = gegl_node_new_child (gegl,
@@ -145,7 +160,7 @@ static void attach (GeglOperation *operation)
 
 
 
-  gegl_node_link_many (input, graph, blur, graph2, box, hue, saturation, multiply, output, NULL);
+  gegl_node_link_many (input, graph, blur, graph2, box, hue, saturation, multiply, opacityall, output, NULL);
   gegl_node_connect_from (multiply, "aux", sharpen, "output");
   gegl_node_link_many (layer, sharpen, NULL);
 
@@ -161,6 +176,7 @@ static void attach (GeglOperation *operation)
   gegl_operation_meta_redirect (operation, "string",  graph, "string");
   gegl_operation_meta_redirect (operation, "string2",  graph2, "string");
   gegl_operation_meta_redirect (operation, "sharpen",  sharpen, "scale");
+  gegl_operation_meta_redirect (operation, "opacityall",  opacityall, "value");
 
 
 
