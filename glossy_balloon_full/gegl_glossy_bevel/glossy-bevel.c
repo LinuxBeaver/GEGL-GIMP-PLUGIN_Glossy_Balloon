@@ -35,7 +35,7 @@ property_string (string2, _("Graph2"), TUTORIAL2)
     ui_meta     ("role", "output-extent")
 
 #define TUTORIAL2 \
-" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur std-dev-x=1 std-dev-y=1 filter=fir id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] reinhard05 brightness=-4 light=0 chromatic=0   "\
+" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur std-dev-x=1 std-dev-y=1 filter=fir id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] id=forceopacity dst-in  aux=[ ref=forceopacity ] id=makeopacity over  aux=[ ref=makeopacity ] id=forceopacity dst-in  aux=[ ref=forceopacity ] id=makeopacity over  aux=[ ref=makeopacity ]  id=forceopacity dst-in  aux=[ ref=forceopacity ] id=makeopacity over  aux=[ ref=makeopacity ] id=forceopacity dst-in  aux=[ ref=forceopacity ] id=makeopacity over  aux=[ ref=makeopacity ]  "\
 
 
 
@@ -63,8 +63,9 @@ property_file_path(src, _("Image file overlay (Desaturation and bright light rec
 
 property_double (opacityall, _("Slide up to remove transparency puff around edges"), 1.0)
     description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
-    value_range (1, 5)
-    ui_range    (1.0, 5)
+    value_range (1, 2)
+    ui_range    (1.0, 2)
+
 
 
 property_double (opacity, _("Opacity of image file overlay"), 1.0)
