@@ -49,13 +49,13 @@ property_string (string3, _("Remove Transparency"), TUTORIAL3)
 
 
 property_double (gaus, _("Balloonification of text"), 6.0)
-   description  (_("The lower the less balloonification. The higher the more balloonification.'"))
-  value_range (0.5, 20.0)
-  ui_range (0.5, 14)
+   description  (_("Makes the text blow up in size.'"))
+  value_range (0.5, 16.0)
+  ui_range (0.5, 9)
   ui_gamma (1.5)
 
 property_double (hue, _("Color rotation"),  0.0)
-   description  (_("Color rotation. Don't like being locked into only a few colors? Desaturate and apply a color effect'"))
+   description  (_("Color rotation. Manually apply a color overlay after applying to make it any color you want.'"))
    value_range  (-180.0, 180.0)
 
 property_double (lightness, _("Lightness"), -7)
@@ -63,20 +63,25 @@ property_double (lightness, _("Lightness"), -7)
    value_range  (-15.0, 15)
 
 property_double (saturation, _("Desaturation for Image File Upload"), 1.2)
-   description  (_("Saturation"))
+   description  (_("Saturation control"))
   ui_range (0.0, 1.5)
    value_range  (0.0, 1.5)
 
 property_file_path(src, _("Image file overlay (Desaturation and bright light recommended)"), "")
-    description (_("Source image file path (png, jpg, raw, svg, bmp, tif, ...)"))
+    description (_("Upload an image, files permitted are (png, jpg, raw, svg, bmp, tif, ...)"))
 
-property_double (opacityall, _("Reduce transparency puff around edges"), 5.0)
+property_double (opacityall, _("Reduce transparency puff around edges"), 10.0)
     description (_("Global opacity value that is always used on top of the optional auxiliary input buffer."))
-    value_range (1, 5.0)
-    ui_range    (1.0, 5.0)
+    value_range (1.0, 10.0)
+    ui_range    (1.0, 10.0)
+    ui_meta     ("role", "output-extent")
 
 property_boolean (removetransparency, _("Entirely Remove transparent puff on edges"), FALSE)
   description    (_("In Pango Markup mode this will clip the borders of letters. So disable it there."))
+    ui_meta     ("role", "output-extent")
+/* this feature is mostly deprecated but still has a use. It is disabled from Glossy Balloon's GUI to make 
+glossy balloon look the way it did orignally back in late may 2022.*/
+
 
 
 
@@ -106,6 +111,7 @@ typedef struct
   GeglNode *opacityall;
   GeglNode *layer;
   GeglNode *removetransparency;
+  GeglNode *repairgeglgraph;
   GeglNode *output;
 } State; 
 
@@ -116,7 +122,7 @@ static void attach (GeglOperation *operation)
 {
   GeglNode *gegl = operation->node;
   GeglProperties *o = GEGL_PROPERTIES (operation);
-  GeglNode *input, *output, *blur, *graph, *graph2, *removetransparency, *nop, *hue,  *layer, *saturation, *opacityall, *multiply;
+  GeglNode *input, *output, *blur, *graph, *graph2, *removetransparency, *nop, *hue,  *layer, *saturation, *opacityall, *multiply, *repairgeglgraph;
 
   input    = gegl_node_get_input_proxy (gegl, "input");
   output   = gegl_node_get_output_proxy (gegl, "output");
@@ -168,6 +174,21 @@ static void attach (GeglOperation *operation)
                                   NULL);
 
 
+  repairgeglgraph      = gegl_node_new_child (gegl, "operation", "gegl:median-blur",
+                                         "radius",       0,
+                                         NULL);
+
+ /*Repair GEGL Graph is a critical operation for Gimp's non-destructive future.
+A median blur at zero radius is confirmed to make no changes to an image. 
+This option resets gegl:opacity's value to prevent a known bug where
+plugins like clay, glossy balloon and custom bevel glitch out when
+drop shadow is applied in a gegl graph below them.*/
+ 
+ 
+ 
+
+
+
 
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-x");
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-y");
@@ -183,7 +204,7 @@ static void attach (GeglOperation *operation)
 
 
 
-  gegl_node_link_many (input, graph, blur, graph2, hue, saturation, multiply, opacityall, output, NULL);
+  gegl_node_link_many (input, graph, blur, graph2, hue, saturation, multiply, opacityall, repairgeglgraph, output, NULL);
   gegl_node_connect_from (multiply, "aux", layer, "output");
   gegl_node_link_many (layer, nop,  NULL);
 
@@ -203,6 +224,7 @@ static void attach (GeglOperation *operation)
   state->layer = layer;
   state->nop = nop;
   state->removetransparency = removetransparency;
+  state->repairgeglgraph = repairgeglgraph;
   state->output = output;
   o->user_data = state;
 }
@@ -222,7 +244,7 @@ update_graph (GeglOperation *operation)
   }
   else
   {
-  gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->hue, state->saturation, state->multiply, state->opacityall,  state->output, NULL);
+  gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->hue, state->saturation, state->multiply, state->opacityall, state->repairgeglgraph, 	state->output, NULL);
   gegl_node_connect_from (state->multiply, "aux", state->layer, "output");
   gegl_node_link_many (state->layer, state->nop, NULL);
   }
