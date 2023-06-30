@@ -1,12 +1,12 @@
-# GEGL-glossy-balloon-text-styling
+# GEGL Glossy Balloon for text styling in Gimp
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/b4ea9d43-cb5d-42fd-86ec-69a2792ac57a)
 
-![image preview](preview4.png)
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/e2f30429-05be-49bd-b057-a44a4834b4eb)
 
-A new Gimp filter where GEGL makes a glossy balloon effect on your text
-
-Just put the binary in /gegl-0.4/plug-ins/ Glossy Balloon no longer has hidden operations/multiple binary depedencies.
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/b23303be-edeb-4b4d-9015-0209dab12689)
 
 
+A classic GEGL Plugin of mine released in late May 2022 where GEGL makes a gloss coated bump text effect.
 
 
 ## OS specific location to put GEGL Filter binaries 
@@ -43,3 +43,7 @@ Then build the same way you would on Linux:
 
 meson setup --buildtype=release build
 ninja -C build
+
+## Enjoy
+
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/0ab62e35-33bb-4a88-a420-37a3d721e56f)
