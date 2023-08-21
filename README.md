@@ -56,6 +56,15 @@ ninja -C build
 
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/b23303be-edeb-4b4d-9015-0209dab12689)
 
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/22904bb0-b2ac-4b1c-b727-bd51c182fa58)
+
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/b3e0f258-09fd-4bc1-8644-2976b939de0c)
+
+![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/059e40b0-0d72-4731-b901-1d7b0ce17ac8)
+
+
+
+
 ## Enjoy
 
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/0ab62e35-33bb-4a88-a420-37a3d721e56f)
