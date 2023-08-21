@@ -3,9 +3,9 @@
 
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/e2f30429-05be-49bd-b057-a44a4834b4eb)
 
-
 A classic GEGL Plugin of mine released in late May 2022 where GEGL makes a gloss coated bump text effect.
-
+This plugin ships with a bonus operation "threshold alpha 2" that behaves like Gimp's Curves on Alpha Channel. The
+bonus operation is highly recommended but not needed for Glossy Balloon to work.
 
 ## OS specific location to put GEGL Filter binaries 
 
