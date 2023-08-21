@@ -9,13 +9,13 @@ bonus operation is highly recommended but not needed for Glossy Balloon to work.
 
 ## OS specific location to put GEGL Filter binaries 
 
-Windows
+**Windows**
 C:\Users\USERNAME\AppData\Local\gegl-0.4\plug-ins
  
- Linux 
+** Linux **
  /home/(USERNAME)/.local/share/gegl-0.4/plug-ins
  
- Linux (Flatpak)
+ **Linux (Flatpak)**
  /home/(USERNAME)/.var/app/org.gimp.GIMP/data/gegl-0.4/plug-ins
 
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/f15fb5eb-c8d7-4c08-bbac-97048864e657)
