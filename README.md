@@ -1,11 +1,19 @@
+Download binaries here. (FOLLOW INSTRUCTIONS)
+https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/releases
+
 # GEGL Glossy Balloon for text styling in Gimp
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/b4ea9d43-cb5d-42fd-86ec-69a2792ac57a)
 
 ![image](https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/assets/78667207/e2f30429-05be-49bd-b057-a44a4834b4eb)
 
-A classic GEGL Plugin of mine released in late May 2022 where GEGL makes a gloss coated bump text effect.
-This plugin ships with a bonus operation "threshold alpha 2" that behaves like Gimp's Curves on Alpha Channel. The
-bonus operation is highly recommended but not needed for Glossy Balloon to work.
+A classic Gimp Plugin of mine released in late May 2022 where GEGL makes a gloss coated bump text effect.
+This plugin ships with a bonus filter "threshold alpha 2" that behaves like Gimp's Curves on Alpha Channel. The
+bonus operation is highly recommended but not needed for Glossy Balloon to work. If you download the binaries it 
+will ship with it.
+
+This plugin looks great with fonts like "DynaPuff" that you can download here.
+https://fonts.google.com/specimen/DynaPuff
+but it will apply on any font and obviously you don't need DynaPuff for it to work.
 
 ## OS specific location to put GEGL Filter binaries 
 
