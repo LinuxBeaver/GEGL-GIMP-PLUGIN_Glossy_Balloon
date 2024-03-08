@@ -38,7 +38,7 @@ opacity value=10
 median-blur radius=0
 
 
-Fun Fact, besides GEGL Effects, Glossy Balloon has gone under more radical change then any other plugin of mine. I have spent countless hours rearranging Glossy Balloon's GEGL nodes. Changing its under
+Fun Fact, besides Graphical Effects, Glossy Balloon has gone under more radical change then any other plugin of mine. I have spent countless hours rearranging Glossy Balloon's GEGL nodes. Changing its under
 the hood stuff while still keeping it roughly the same from a user's perspective. At one point (early 2023) Glossy Balloon had a disable puff checkbox that worked by stacking layer copies on top of each other. 
 It was removed mid 2023. During the debut of Glossy Balloon late may 2022) it required several mandatory dependencies when I knew little about GEGL plugin development. The GEGL Graphs were not embedded but 
 rather seperate binary dependencies. In the summer of 2022 to early 2023 Glossy Balloon had a sharpen feature and seperate hue rotation meant for its image file overlay. Both removed, Now - as of July 2023 Glossy Balloon once again has a dependency but this time it is ENTIRELY OPTIONAL and designed to remove edge puff. It was also granted the ability to use the HSL Color blend mode with an optional checkbox.
@@ -151,7 +151,7 @@ update_graph (GeglOperation *operation)
 /* This graph list everything in glossy balloon with an additional threshold-alpha like filter that kicks in at 3.1 "Balloonification/gaussian blur". state->ta2 is the only addition.  */
       gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->hue, state->light, state->saturation, state->opacityall, state->smooth, state->multiply, state->repairgeglgraph,  state->ta2, state->output, NULL);
 /* Multiply blend mode fuses with image file upload*/
-  gegl_node_connect_from (state->multiply, "aux", state->layer, "output");
+  gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
   gegl_node_link_many (state->layer, state->nop,  NULL); 
   }
@@ -160,27 +160,27 @@ update_graph (GeglOperation *operation)
 /* This graph list everything in glossy balloon  */
       gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->hue, state->light, state->saturation, state->opacityall, state->smooth, state->multiply, state->repairgeglgraph, state->output, NULL);
 /* Multiply blend mode fuses with image file upload*/
-  gegl_node_connect_from (state->multiply, "aux", state->layer, "output");
+  gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
   gegl_node_link_many (state->layer, state->nop,  NULL); 
   }
   if (o->wildcolor)
 /* Enable HSL wild color mode for Glossy Balloon.  */
       gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->huelock, state->lightlock,  state->opacityall, state->smooth,  state->gray, state->multiply, state->hslcolor, state->saturation, state->repairgeglgraph,  state->output, NULL);
-  gegl_node_connect_from (state->hslcolor, "aux", state->nop2, "output");
+  gegl_node_connect (state->hslcolor, "aux", state->nop2, "output");
   gegl_node_link_many (state->color, state->nop2, NULL);
 /* Multiply blend mode fuses with image file upload*/
-  gegl_node_connect_from (state->multiply, "aux", state->layer, "output");
+  gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
   gegl_node_link_many (state->layer, state->nop,  NULL); 
 if (o->wildcolor)
   if (o->gaus > 3.1)
 /* Enable HSL wild color mode for Glossy Balloon with threshold alpha like graph that kicks in at 3.1.  */
       gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->huelock, state->lightlock, state->opacityall, state->smooth,  state->gray, state->multiply, state->hslcolor, state->repairgeglgraph,  state->saturation, state->ta2,  state->output, NULL);
-  gegl_node_connect_from (state->hslcolor, "aux", state->nop2, "output");
+  gegl_node_connect (state->hslcolor, "aux", state->nop2, "output");
   gegl_node_link_many (state->color, state->nop2, NULL);
 /* Multiply blend mode fuses with image file upload*/
-  gegl_node_connect_from (state->multiply, "aux", state->layer, "output");
+  gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
   gegl_node_link_many (state->layer, state->nop,  NULL); 
 if (!o->gbstatus)
@@ -317,7 +317,7 @@ drop shadow is applied in a gegl graph below them.*/
 
  /* ORIGINAL GEGL GRAPH BEFORE THE THRESHOLD ALPHA 2 UPDATE
   gegl_node_link_many (input, graph, blur, graph2, hue, saturation, opacityall, smooth, multiply, repairgeglgraph, output, NULL);
-  gegl_node_connect_from (multiply, "aux", layer, "output");
+  gegl_node_connect (multiply, "aux", layer, "output");
   gegl_node_link_many (layer, nop,  NULL);*/
 
   State *state = g_malloc0 (sizeof (State));
