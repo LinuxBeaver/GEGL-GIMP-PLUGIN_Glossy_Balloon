@@ -23,11 +23,11 @@
  
 color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=100 
 median-blur  percentile=90 alpha-percentile=290
-gaussian-blur clip-extent=false std-dev-x=4 std-dev-y=4
+gaussian-blur std-dev-x=4 std-dev-y=4
 id=3
 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
 median-blur  percentile=90 alpha-percentile=290
-gaussian-blur clip-extent=false std-dev-x=4 std-dev-y=4
+gaussian-blur std-dev-x=4 std-dev-y=4
 id=3
 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
 median-blur  percentile=90 alpha-percentile=290
@@ -55,12 +55,12 @@ the point in fixing meaningless errors.*/
 #ifdef GEGL_PROPERTIES
 
 #define TUTORIAL \
-" color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=100 "\
+" color-overlay value=#f587ff median-blur abyss-policy=none  percentile=90 alpha-percentile=100 "\
 /* This GEGL Graph is the base pink color that is needed to bring out glossy balloon's glossy shine and a median blur to make it "fatter" like a balloon. */
 
 
 #define TUTORIAL2 \
-" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur  percentile=90 alpha-percentile=100 gaussian-blur clip-extent=false std-dev-x=1 std-dev-y=1 filter=fir id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]  "\
+" id=3 screen aux=[   ref=3 emboss  type=bumpmap azimuth=30  elevation=15 ] median-blur abyss-policy=none  percentile=90 alpha-percentile=100 gaussian-blur  abyss-policy=none  clip-extent=false std-dev-x=1 std-dev-y=1 filter=fir id=3 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur abyss-policy=none  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] median-blur abyss-policy=none  percentile=50 alpha-percentile=100 screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]  "\
 /* This GEGL graph is a instruction for emboss to fuss with screen like a normal bevel but done five times over*/
 
 
@@ -199,7 +199,7 @@ GeglProperties *o = GEGL_PROPERTIES (operation);
   output   = gegl_node_get_output_proxy (gegl, "output");
 
   blur    = gegl_node_new_child (gegl,
-                                  "operation", "gegl:gaussian-blur clip-extent=false",
+                                  "operation", "gegl:gaussian-blur",    "abyss-policy", 0,  "clip-extent", FALSE,  
    "filter", 1,
                                   NULL);
 /* Filter one is code for Gaussian Blur Fir*/
@@ -295,7 +295,7 @@ hslcolor = gegl_node_new_child (gegl,
                               "operation", "gimp:layer-mode", "layer-mode", 39, "composite-mode", 0, "blend-space", 1, NULL);
 
 
-  repairgeglgraph      = gegl_node_new_child (gegl, "operation", "gegl:median-blur",
+  repairgeglgraph      = gegl_node_new_child (gegl, "operation", "gegl:median-blur",     "abyss-policy",     GEGL_ABYSS_NONE,
                                          "radius",       0,
                                          NULL);
 
