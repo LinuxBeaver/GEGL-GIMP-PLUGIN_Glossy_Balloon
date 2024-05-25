@@ -20,30 +20,30 @@
 /* This is a Glossy Balloon's GEGL Graph made in mid 2022 with some modifications.
  It is not 100% the same but the closest I can find in my archives. So this is how you can test this filter without installing it.
 
- 
-color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=100 
+
+color-overlay value=#f587ff median-blur  percentile=90 alpha-percentile=100
 median-blur  percentile=90 alpha-percentile=290
 gaussian-blur std-dev-x=4 std-dev-y=4
 id=3
-screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
+screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]
 median-blur  percentile=90 alpha-percentile=290
 gaussian-blur std-dev-x=4 std-dev-y=4
 id=3
-screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
+screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]
 median-blur  percentile=90 alpha-percentile=290
-screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
+screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]
 median-blur  percentile=90 alpha-percentile=290
-screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ] 
+screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]
 opacity value=10
 median-blur radius=0
 
 
 Fun Fact, besides Graphical Effects, Glossy Balloon has gone under more radical change then any other plugin of mine. I have spent countless hours rearranging Glossy Balloon's GEGL nodes. Changing its under
-the hood stuff while still keeping it roughly the same from a user's perspective. At one point (early 2023) Glossy Balloon had a disable puff checkbox that worked by stacking layer copies on top of each other. 
-It was removed mid 2023. During the debut of Glossy Balloon late may 2022) it required several mandatory dependencies when I knew little about GEGL plugin development. The GEGL Graphs were not embedded but 
+the hood stuff while still keeping it roughly the same from a user's perspective. At one point (early 2023) Glossy Balloon had a disable puff checkbox that worked by stacking layer copies on top of each other.
+It was removed mid 2023. During the debut of Glossy Balloon late may 2022) it required several mandatory dependencies when I knew little about GEGL plugin development. The GEGL Graphs were not embedded but
 rather seperate binary dependencies. In the summer of 2022 to early 2023 Glossy Balloon had a sharpen feature and seperate hue rotation meant for its image file overlay. Both removed, Now - as of July 2023 Glossy Balloon once again has a dependency but this time it is ENTIRELY OPTIONAL and designed to remove edge puff. It was also granted the ability to use the HSL Color blend mode with an optional checkbox.
 
-Glossy Balloon came into GEGL Graph conception probably in April-May 2022 BEFORE I MADE PLUGINS. 
+Glossy Balloon came into GEGL Graph conception probably in April-May 2022 BEFORE I MADE PLUGINS.
 
 July 13 2023 update giving Glossy Balloon an optional HSL color mode. Beaver spent several hours trying to figure out why the trivial "gegl_node_pads_exist: Can't find sink property input of gegl:color 0x55da255f3590" ERROR exist. This error causes zero issue with GEGL and should be ignored. Please tell CMYK student to make sure that non-destructive filters work even if they have warnings. I don't see
 the point in fixing meaningless errors.*/
@@ -153,16 +153,16 @@ update_graph (GeglOperation *operation)
 /* Multiply blend mode fuses with image file upload*/
   gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
-  gegl_node_link_many (state->layer, state->nop,  NULL); 
+  gegl_node_link_many (state->layer, state->nop,  NULL);
   }
-  else 
+  else
   {
 /* This graph list everything in glossy balloon  */
       gegl_node_link_many (state->input, state->graph, state->blur, state->graph2, state->hue, state->light, state->saturation, state->opacityall, state->smooth, state->multiply, state->repairgeglgraph, state->output, NULL);
 /* Multiply blend mode fuses with image file upload*/
   gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
-  gegl_node_link_many (state->layer, state->nop,  NULL); 
+  gegl_node_link_many (state->layer, state->nop,  NULL);
   }
   if (o->wildcolor)
 /* Enable HSL wild color mode for Glossy Balloon.  */
@@ -172,7 +172,7 @@ update_graph (GeglOperation *operation)
 /* Multiply blend mode fuses with image file upload*/
   gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
-  gegl_node_link_many (state->layer, state->nop,  NULL); 
+  gegl_node_link_many (state->layer, state->nop,  NULL);
 if (o->wildcolor)
   if (o->gaus > 3.1)
 /* Enable HSL wild color mode for Glossy Balloon with threshold alpha like graph that kicks in at 3.1.  */
@@ -182,10 +182,10 @@ if (o->wildcolor)
 /* Multiply blend mode fuses with image file upload*/
   gegl_node_connect (state->multiply, "aux", state->layer, "output");
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
-  gegl_node_link_many (state->layer, state->nop,  NULL); 
+  gegl_node_link_many (state->layer, state->nop,  NULL);
 if (!o->gbstatus)
 /* Disable's Glossy Balloon*/
-  gegl_node_link_many (state->input, state->output,  NULL); 
+  gegl_node_link_many (state->input, state->output,  NULL);
 }
 
 static void attach (GeglOperation *operation)
@@ -199,7 +199,7 @@ GeglProperties *o = GEGL_PROPERTIES (operation);
   output   = gegl_node_get_output_proxy (gegl, "output");
 
   blur    = gegl_node_new_child (gegl,
-                                  "operation", "gegl:gaussian-blur",    "abyss-policy", 0,  "clip-extent", FALSE,  
+                                  "operation", "gegl:gaussian-blur",    "abyss-policy", 0,  "clip-extent", FALSE,
    "filter", 1,
                                   NULL);
 /* Filter one is code for Gaussian Blur Fir*/
@@ -207,10 +207,10 @@ GeglProperties *o = GEGL_PROPERTIES (operation);
 
  graph   = gegl_node_new_child (gegl,
                                   "operation", "gegl:gegl", "string", TUTORIAL,  NULL);
-                             
+
 
  graph2   = gegl_node_new_child (gegl,
-                                  "operation", "gegl:gegl",  "string", TUTORIAL2, 
+                                  "operation", "gegl:gegl",  "string", TUTORIAL2,
                                   NULL);
 /*JUNE 24 2023 I FINALLY FIGURED OUT HOW TO HIDE GEGL GRAPH STRINGS. My Plugins have never been more professional*/
 
@@ -300,19 +300,17 @@ hslcolor = gegl_node_new_child (gegl,
                                          NULL);
 
  /*Repair GEGL Graph is a critical operation for Gimp's non-destructive future.
-A median blur at zero radius is confirmed to make no changes to an image. 
+A median blur at zero radius is confirmed to make no changes to an image.
 This option resets gegl:opacity's value to prevent a known bug where
 plugins like clay, glossy balloon and custom bevel glitch out when
 drop shadow is applied in a gegl graph below them.*/
- 
+
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-x");
   gegl_operation_meta_redirect (operation, "gaus", blur, "std-dev-y");
   gegl_operation_meta_redirect (operation, "hue", hue, "hue");
   gegl_operation_meta_redirect (operation, "lightness", light, "lightness");
   gegl_operation_meta_redirect (operation, "src", layer, "src");
   gegl_operation_meta_redirect (operation, "saturation", saturation, "scale");
-  gegl_operation_meta_redirect (operation, "string",  graph, "string");
-  gegl_operation_meta_redirect (operation, "string2",  graph2, "string");
   gegl_operation_meta_redirect (operation, "hslcolor",  color, "value");
 
  /* ORIGINAL GEGL GRAPH BEFORE THE THRESHOLD ALPHA 2 UPDATE
