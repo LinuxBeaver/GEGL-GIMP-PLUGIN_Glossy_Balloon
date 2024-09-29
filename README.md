@@ -20,7 +20,7 @@ but it will apply on any font and obviously you don't need DynaPuff for it to wo
 **Windows**
 C:\Users\USERNAME\AppData\Local\gegl-0.4\plug-ins
  
-** Linux **
+**Linux**
  /home/(USERNAME)/.local/share/gegl-0.4/plug-ins
  
  **Linux (Flatpak)**
@@ -30,15 +30,17 @@ C:\Users\USERNAME\AppData\Local\gegl-0.4\plug-ins
 
 
 ## Compiling and Installing
+
+For Linux run "build_plugin_linux.sh" for Windows run "build_plugin_windows.sh"
+
+Packages needed to compile are **ninja**, **meson**, and **GEGL**
+
 **Linux**
 
 To compile and install you will need the GEGL header files (libgegl-dev on Debian based distributions or gegl on Arch Linux) and meson (meson on most distributions).
 
 meson setup --buildtype=release build
 ninja -C build
-
-
-If you have an older version of gegl you may need to copy to ~/.local/share/gegl-0.3/plug-ins instead (on Ubuntu 18.04 for example).
 
 **Windows**
 
