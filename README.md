@@ -1,4 +1,5 @@
 Download binaries here. (FOLLOW INSTRUCTIONS)
+
 https://github.com/LinuxBeaver/GEGL-glossy-balloon-text-styling/releases
 
 # GEGL Glossy Balloon for text styling in Gimp
