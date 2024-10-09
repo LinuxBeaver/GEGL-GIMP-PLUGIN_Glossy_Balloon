@@ -32,7 +32,7 @@ C:\Users\USERNAME\AppData\Local\gegl-0.4\plug-ins
 
 ## Compiling and Installing
 
-For Linux run "build_plugin_linux.sh" for Windows run "build_plugin_windows.sh"
+For Linux run "build_plugin_linux.sh" for Windows run "build_plugin_windows.sh" for manual compiling read below.
 
 Packages needed to compile are **ninja**, **meson**, and **GEGL**
 
