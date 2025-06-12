@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with GEGL; if not, see <https://www.gnu.org/licenses/>.
  *
- * Copyright 2006 Øyvind Kolås <pippin@gimp.org>
+ * Credit to Øvind Kolas (pippin) for major GEGL contributions
  * 2022 Beaver GEGL Glossy Balloon *2023 Beaver Glossy Balloon (branch with advance modifications, can co-exist with default plugin)
  */
 
