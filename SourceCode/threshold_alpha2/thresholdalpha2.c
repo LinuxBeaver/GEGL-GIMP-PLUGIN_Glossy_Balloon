@@ -18,7 +18,7 @@
  */
 
 /* 
-This filter can be tested without installing by running this syntax inside Gimp's GEGL Graph filter.
+This filter can be tested without installing by running this syntax inside Gimpꞌs GEGL Graph filter.
 
 id=0
 gimp:layer-mode layer-mode=split composite-mode=auto aux=[ ref=0 
@@ -68,8 +68,8 @@ static void attach (GeglOperation *operation)
  behind   = gegl_node_new_child (gegl,
                                   "operation", "gegl:dst-over",  NULL);
 
-/*This is Gimp's split blend mode. Similar to erase except it gets rid of edge puff better. I prefer this over erase.
-NOTE GEGL'S XOR (gegl:xor) WILL NOT WORK PROPER WITH THIS AS IT USES THE UNION BLEND MODE AND THAT BREAKS THINGS BY NOT MAKING IT TRANSPARENT.*/
+/*This is Gimpꞌs split blend mode. Similar to erase except it gets rid of edge puff better. I prefer this over erase.
+NOTE GEGLꞌS XOR (gegl:xor) WILL NOT WORK PROPER WITH THIS AS IT USES THE UNION BLEND MODE AND THAT BREAKS THINGS BY NOT MAKING IT TRANSPARENT.*/
 erase = gegl_node_new_child (gegl,
                               "operation", "gimp:layer-mode", "layer-mode", 60, "composite-mode", 0, NULL);
 
@@ -116,7 +116,7 @@ gegl_op_class_init (GeglOpClass *klass)
     "title",       _("Threshold Alpha 2"),
     "categories",  "plugins",
     "reference-hash", "threso1alphbgxxf34t27730vaefe2g4f1b2ac",
-    "description", _("A better version of Gimp's threshold alpha filter to increase alpha channel intensity without killing transparency."
+    "description", _("A better version of Gimpꞌs threshold alpha filter to increase alpha channel intensity without killing transparency."
                      ""),
     NULL);
 }

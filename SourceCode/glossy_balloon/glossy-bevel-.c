@@ -17,7 +17,7 @@
  * 2022 Beaver GEGL Glossy Balloon *2023 Beaver Glossy Balloon (branch with advance modifications, can co-exist with default plugin)
  */
 
-/* This is a Glossy Balloon's GEGL Graph made in mid 2022 with some modifications.
+/* This is a Glossy Balloonꞌs GEGL Graph made in mid 2022 with some modifications.
  It is not 100% the same but the closest I can find in my archives. So this is how you can test this filter without installing it.
 
 
@@ -37,7 +37,7 @@ screen aux=[ ref=3  emboss  type=bumpmap azimuth=90  elevation=15 ]
 opacity value=10
 median-blur radius=0
 
-July 13 2023 update giving Glossy Balloon an optional HSL color mode. Beaver spent several hours trying to figure out why the trivial "gegl_node_pads_exist: Can't find sink property input of gegl:color 0x55da255f3590" ERROR exist. This error causes zero issue with GEGL and should be ignored. Please tell CMYK student to make sure that non-destructive filters work even if they have warnings. I don't see
+July 13 2023 update giving Glossy Balloon an optional HSL color mode. Beaver spent several hours trying to figure out why the trivial "gegl_node_pads_exist: Canꞌt find sink property input of gegl:color 0x55da255f3590" ERROR exist. This error causes zero issue with GEGL and should be ignored. Please tell CMYK student to make sure that non-destructive filters work even if they have warnings. I donꞌt see
 the point in fixing meaningless errors.*/
 
 
@@ -158,7 +158,7 @@ State *state = g_malloc0 (sizeof (State));
 
    state->pink   = gegl_node_new_child (gegl,
                                   "operation", "gegl:color-overlay", "value", specialpink,  NULL);
-/* this is the base pink color that is needed to bring out glossy balloon's glossy shine  */
+/* this is the base pink color that is needed to bring out glossy balloonꞌs glossy shine  */
 
    state->graph2   = gegl_node_new_child (gegl,
                                   "operation", "gegl:gegl",  "string", TUTORIAL2,
@@ -230,9 +230,9 @@ State *state = g_malloc0 (sizeof (State));
                                          "radius",       0,
                                          NULL);
 
- /*Repair GEGL Graph is a critical operation for Gimp's non-destructive future.
+ /*Repair GEGL Graph is a critical operation for Gimpꞌs non-destructive future.
 A median blur at zero radius is confirmed to make no changes to an image.
-This option resets gegl:opacity's value to prevent a known bug where
+This option resets gegl:opacityꞌs value to prevent a known bug where
 plugins like clay, glossy balloon and custom bevel glitch out when
 drop shadow is applied in a gegl graph below them.*/
 
@@ -291,7 +291,7 @@ if (o->wildcolor)
 /* Image file upload is given a trivial no operation to prevent a trivial warning */
   gegl_node_link_many (state->layer, state->nop,  NULL);
 if (!o->gbstatus)
-/* Disable's Glossy Balloon*/
+/* Disableꞌs Glossy Balloon*/
   gegl_node_link_many (state->input, state->output,  NULL);
 
  /* ORIGINAL GEGL GRAPH BEFORE THE THRESHOLD ALPHA 2 UPDATE
@@ -315,7 +315,7 @@ GeglOperationMetaClass *operation_meta_class = GEGL_OPERATION_META_CLASS (klass)
     "name",        "lb:glossy-balloon",
     "title",       _("Glossy Balloon"),
     "reference-hash", "branch45a35416a10a512570f0f25sb2ac",
-    "description", _("Make inflatable glossy bumped text - Doesn't work well on small text"
+    "description", _("Make inflatable glossy bumped text - Doesnꞌt work well on small text"
                      ""),
     "gimp:menu-path", "<Image>/Filters/Text Styling",
     "gimp:menu-label", _("Glossy Balloon..."),
